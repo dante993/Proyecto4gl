@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(../font/material-design-icons/desc.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  word-wrap: normal;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+.centro_log{
+
+    text-align: center;
+    margin-left: 30%;
+    margin-top: 20%;
+}
+.bk_colr{
+    background-color: rgba(0, 0, 0, 0.53);
+}
+.menu{
+    padding-right: 5px;
+    border-right: 2px solid #c6cbd0;
+    float: left;
+    position: fixed;
+    max-width: 20%;
+    margin-left: 3px;
+    height: 100%;
+}
+.formularios-peq{
+    width: 45%;
+    float: left;
+    padding-left: 4%;
+}
+.centro-home{
+    border: 1px solid #00bfa5  ;
+    border-radius: 5px 5px 5px 5px;
+    margin-top: 3%;
+    margin-left: 35%;
+    margin-right: 35%;
+
+    padding-top: 2%;
+    padding-left: 4%;
+}
+.pcs{
+    float: left;
+}
+.tam_pc{
+    width: 175%;
+}
+.tam_serv{
+    width: 200%;
+}
+.obsv{
+    margin-left: 25%;
+    width: 50%;
+}
+.tam_l{
+
+}
+.tam_l > label{
+    font-size: 16px
+}
+.cont-f{
+    font-family: "Myria pro";
+}
+.btn-2{
+    background-color: #3498D0;
+}
+.btn-comp{
+    width: 100%;
+}
+.color-c{
+    border-radius: 5px 5px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.82);
+}
+.azul{
+    background-color: #3498D0;
+}

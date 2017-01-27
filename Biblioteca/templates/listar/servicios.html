@@ -1,0 +1,58 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+
+        <h2 align="center">Servicios</h2>
+        <br/>
+
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s4">
+                    <a class="waves-effect waves-light btn" href="{% url 'serv_create' %}"><i class="material-icons left">add</i>Nuevo</a>
+                </div>
+                <div class="input-field col s2">
+                    <input id="busca" name="busca" type="text" class="validate">
+                    <label for="busca">Buscar</label>
+                </div>
+                <div class="input-field col s1">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        <i class="material-icons right">search</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+
+
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+                <th width="10%">Id</th>
+                <th width="10%">Nombre</th>
+                <th width="10%">Estado</th>
+                <th width="10%">Descripción</th>
+                <th width="10%">(Editar/Eliminar)</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for servicio in servicios %}
+                <tr>
+                    <td width="10%">{{ servicio.serv_id }}</td>
+                    <td width="10%">{{ servicio.serv_nombre }}</td>
+
+                    {% if servicio.serv_estado == True%}
+                        <td>activo</td>
+                    {% endif %}
+                    {% if servicio.serv_estado == False%}
+                        <td>inactivo</td>
+                    {% endif %}
+                    <td width="10%"><textarea style="width: 250px;height: 100px" disabled>{{ servicio.serv_descripcion }}</textarea></td>
+                    <td width="10%"><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'editar_servicio' servicio.serv_id %}"><i class="material-icons">mode_edit</i></a>
+                        <a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'borrar_serv' servicio.serv_id %}"><i class="material-icons">delete</i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+
+        <h2 align="center">Carreras</h2>
+        <br/>
+
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s4">
+                    <a class="waves-effect waves-light btn" href="{% url 'carr_create' %}"><i class="material-icons left">add</i>Nueva</a>
+                </div>
+                <div class="input-field col s2">
+                    <input id="busca" name="busca" type="text" class="validate">
+                    <label for="busca">Buscar</label>
+                </div>
+                <div class="input-field col s1">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        <i class="material-icons right">search</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+
+
+        <table class="striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Departamento</th>
+                <th>Nombre</th>
+                <th>Unidad académica</th>
+                <th>Descripción</th>
+                <th>(Editar)</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for carrera in carreras %}
+                <tr>
+                    <td>{{ carrera.carr_id }}</td>
+                    <td>{{ carrera.dep_codigo }}</td>
+                    <td>{{ carrera.carr_nombre }}</td>
+                    <td>{{ carrera.ua_id }}</td>
+                    <td><textarea style="width: 250px;height: 100px" disabled>{{ carrera.carr_descripcion }}</textarea></td>
+                    <td><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'editar_carrera' carrera.carr_id %}"><i class="material-icons">mode_edit</i></a>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

@@ -1,0 +1,72 @@
+{% extends "base_admin.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+
+        <div class="formularios-peq color-c">
+            <div class="row">
+                <form method="POST" class="col s12">{% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s7">
+                            {{ form.comp_id }}
+                            {{ form.comp_id.label_tag }}
+                            {{ form.comp_id.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_numero }}
+                            {{ form.comp_numero.label_tag }}
+                            {{ form.comp_numero.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_marca }}
+                            {{ form.comp_marca.label_tag }}
+                            {{ form.comp_marca.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_serie }}
+                            {{ form.comp_serie.label_tag }}
+                            {{ form.comp_serie.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_so }}
+                            {{ form.comp_so.label_tag }}
+                            {{ form.comp_so.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_anio }}
+                            {{ form.comp_anio.label_tag }}
+                            {{ form.comp_anio.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_ram }}
+                            {{ form.comp_ram.label_tag }}
+                            {{ form.comp_ram.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_disco_d }}
+                            {{ form.comp_disco_d.label_tag }}
+                            {{ form.comp_disco_d.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.comp_procesador }}
+                            {{ form.comp_procesador.label_tag }}
+                            {{ form.comp_procesador.errors }}
+                        </div>
+                        <div class="input-field col s7">
+                            <p>
+                                {{ form.comp_estado }}
+                                {{ form.comp_estado.label_tag }}
+                            </p>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <a class="btn waves-effect waves-light" href="{% url 'comp_list' %}">Cancelar</a>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
+                        <i class="material-icons">send</i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,68 @@
+{% extends "base_admin.html" %}
+{% load staticfiles %}
+{% block content %}
+
+    <div class="row" style="float:left;border: 1px solid #00bfa5;margin-left: 10%;margin-top: 14%;margin-right: 10%">
+        <div class="col s3 ">
+            <div class="card color-c">
+                <div class="card-content">
+                    <p>
+                        Imprimir reporte por Estudiante
+                    </p>
+                </div>
+                <div class="card-action">
+                    <button class="btn-large btn-floating white-text" onclick=" window.open('{% url 'rep_soli_est' %}') " style="margin-left: 27%"><i class="material-icons right">print</i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col s3 ">
+            <div class="card color-c">
+                <div class="card-content">
+                    <p>
+                        Imprimir reporte por Carrera <br/>
+                    </p>
+                </div>
+                <div class="card-action">
+                    <button class="btn-large btn-floating white-text" onclick=" window.open('{% url 'rep_soli_carr' %}') " style="margin-left: 27%"><i class="material-icons right">print</i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col s3 ">
+            <div class="card color-c">
+                <div class="card-content">
+                    <p>
+                        Imprimir reporte por Fecha<br/>
+                    </p>
+                </div>
+                <div class="card-action">
+                    <button class="btn-large btn-floating white-text" onclick=" window.open('{% url 'rep_soli_fech' %}') " style="margin-left: 27%"><i class="material-icons right">print</i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col s3 ">
+            <div class="card color-c">
+                <div class="card-content">
+                    <p>
+                        Imprimir reporte por Servicio<br/>
+                    </p>
+                </div>
+                <div class="card-action">
+                    <button class="btn-large btn-floating white-text" style="margin-left: 27%" onclick=" window.open('{% url 'rep_soli_serv' %}') "><i class="material-icons right">print</i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col s3 ">
+            <div class="card color-c">
+                <div class="card-content">
+                    <p>
+                        Imprimir reporte General<br/>
+                    </p>
+                </div>
+                <div class="card-action">
+                    <button class="btn-large btn-floating white-text" style="margin-left: 27%" onclick=" window.open('{% url 'rep_soli_gen' %}') "><i class="material-icons right">print</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

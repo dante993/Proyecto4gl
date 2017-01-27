@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <br/>
+    <div align="center">
+        <a class="waves-effect waves-light btn-floating btn-large"><i class="material-icons large right">done</i></a><strong> = Solicitar </strong>
+        <a class="waves-effect waves-light" ><i class="material-icons medium">info</i></a><strong> = Informacion</strong>
+    </div>
+    <br/>
+    <div class="divider"></div><br/><br/>
+
+    {% for servicio in servicios %}
+        {% if servicio.serv_nombre == 'Autoprestamo de computadoras'%}
+            <a>
+                <div class="pcs">
+                    <div class="row tam_serv">
+                        <div class="col s12 m6">
+                            <div class="card blue">
+                                <div class="card-content">
+                                    <strong class="white-text">Autopréstamo de computadoras</strong>
+                                </div>
+                                <div class="card-action">
+                                    <a class="waves-effect waves-light btn-floating btn-large" href="{% url 'prestamo' %}"><i class="material-icons large right">done</i></a>
+                                    <a class="waves-effect waves-light modal-trigger" href="#modalA"><i class="material-icons medium">info</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% else %}
+            <a>
+                <div class="pcs">
+                    <div class="row tam_serv">
+                        <div class="col s12 m6">
+                            <div class="card blue">
+                                <div class="card-content">
+                                    <strong class="white-text">{{ servicio.serv_nombre }}</strong>
+                                </div>
+                                <div class="card-action">
+                                    <a class="waves-effect waves-light btn-floating btn-large" href="{% url 'solicitar_servicio' servicio.serv_id %}"><i class="material-icons large right">done</i></a>
+                                    <a class="waves-effect waves-light modal-trigger" href="#modal{{servicio.serv_id}}"><i class="material-icons medium">info</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+
+        <!-- Modal Structure -->
+        <div id="modal{{servicio.serv_id}}" class="modal">
+            <div class="modal-content">
+                <h4>{{ servicio.serv_nombre }}</h4>
+                <p >{{ servicio.serv_descripcion }}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-floating btn-large"><i class="material-icons large right">done</i></a>
+            </div>
+        </div>
+    {% endfor %}
+    <!-- Modal Structure -->
+    <div id="modalA" class="modal">
+        <div class="modal-content">
+            <h4>Autopréstamo de computadoras</h4>
+            <p>Servicio que facilita a los usuarios el autopréstamo automatizado de las computadoras de la biblioteca.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-floating btn-large"><i class="material-icons large right">done</i></a>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+
+{% endblock content %}
+

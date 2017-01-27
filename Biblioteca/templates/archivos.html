@@ -1,0 +1,43 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+
+        <h2 align="center">Archivos</h2>
+        <br/>
+
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s3">
+                    <a class="waves-effect waves-light btn" href="{% url 'archivo' %}"><i class="material-icons left">add</i>Agregar</a>
+                </div>
+                <div class="input-field col s2">
+                    <a class="waves-effect waves-light btn" href="{% url 'personas_list' %}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+
+
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+                <th width="10%">Id</th>
+                <th width="10%">Archivo</th>
+                <th width="10%">Carrera</th>
+                <th width="10%">Importar</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for imp in importe %}
+                <tr>
+                    <td width="10%">{{ imp.id }}</td>
+                    <td width="10%">{{ imp.imp_archvio }}</td>
+                    <td width="10%">{{ imp.imp_carrera }}</td>
+                    <td><a href="{% url 'imp' imp.imp_archvio imp.imp_carrera %}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">call_received</i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

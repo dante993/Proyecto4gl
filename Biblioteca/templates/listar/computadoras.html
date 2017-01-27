@@ -1,0 +1,77 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="color-c" style="margin-left: 2%;margin-right: 2%">
+        <div class="container">
+            <h2 align="center">Computadoras</h2>
+            <br/>
+            <form class="col s12" method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s4">
+                        <a class="waves-effect waves-light btn" href="{% url 'comp_create' %}"><i class="material-icons left">add</i>Nueva</a>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="busca" name="busca" type="text" class="validate">
+                        <label for="busca">Buscar</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <button class="btn waves-effect waves-light" type="submit">
+                            <i class="material-icons right">search</i>
+                        </button>
+                    </div>
+                    <div class="input-field col s1">
+                    <button onclick=" window.open('{% url 'pdf_comp' %}') " class="btn-floating waves-effect waves-light">
+                        <i class="material-icons right">print</i>
+                    </button>
+                </div>
+                </div>
+            </form>
+            <div style="border-bottom: 1px solid"></div>
+        </div>
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+                <th>MAC</th>
+                <th>Número</th>
+                <th>Marca</th>
+                <th>Serie</th>
+                <th>S.O.</th>
+                <th>Año</th>
+                <th>RAM</th>
+                <th>Disco</th>
+                <th>Procesador</th>
+                <th>Estado</th>
+                <th>Observaciones</th>
+                <th>(Editar/Eliminar)</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for computador in computadoras %}
+                <tr>
+                    <td>{{ computador.comp_id }}</td>
+                    <td>{{ computador.comp_numero }}</td>
+                    <td>{{ computador.comp_marca }}</td>
+                    <td>{{ computador.comp_serie }}</td>
+                    <td>{{ computador.comp_so }}</td>
+                    <td>{{ computador.comp_anio }}</td>
+                    <td>{{ computador.comp_ram }}</td>
+                    <td>{{ computador.comp_disco_d }}</td>
+                    <td>{{ computador.comp_procesador }}</td>
+                    {% if computador.comp_estado == True%}
+                        <td>activo</td>
+                    {% endif %}
+                    {% if computador.comp_estado == False%}
+                        <td>inactivo</td>
+                    {% endif %}
+                    <td><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'obs_list' computador.comp_id%}"><i class="material-icons">visibility</i> </a>
+                        <a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'observacion_pc' computador.comp_id %}"><i class="material-icons">add</i></a></td>
+                    <td><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'editar_computador' computador.comp_id %}"><i class="material-icons">mode_edit</i></a>
+                        <a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'borrar_comp' computador.comp_id %}"><i class="material-icons">delete</i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <br/><br/>
+    <div class="container color-c">
+
+        <h2 style="text-align: center">Servicios solicitados</h2>
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+
+                <div class="input-field col s1" style="margin-left: 10px">
+
+                </div>
+                <div class="input-field col s5">
+                    <a class="btn waves-effect waves-light" href="{% url 'rep_soli' %}">Imprimir reportes</a>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+        <div class="row" style="margin-left: 0%">
+            {% if solicitudes.has_previous %}
+                <a class="btn col s1 azul white-text flow-text waves-effect" href="?page={{ solicitudes.previous_page_number }}" style="border-right: 1px solid #000000">
+                    <<
+                </a>
+            {% endif %}
+            <a class="col s3 azul white-text flow-text" style="border-right: 1px solid #000000">
+                Página {{ solicitudes.number }} de {{ solicitudes.paginator.num_pages }}
+            </a>
+            {% if solicitudes.has_next %}
+                <a class="btn col s1 azul white-text flow-text waves-effect right-align" href="?page={{ solicitudes.next_page_number }}"> >> </a>
+            {% endif %}
+        </div>
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+
+                <th width="10%">Usuario</th>
+                <th width="10%">Carrera</th>
+                <th width="10%">Servicio</th>
+                <th width="10%" >Fecha</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for solicitud in solicitudes %}
+                <tr>
+                    <td width="10%">{{ solicitud.per_cedula }}</td>
+                    {% if solicitud.carr_id == None%}
+                        <td width="10%">Ninguna</td>
+                    {% else %}
+                        <td width="10%">{{ solicitud.carr_id }}</td>
+                    {% endif %}
+                    <td width="10%">{{ solicitud.serv_id }}</td>
+                    <td width="11%">{{ solicitud.ss_fecha }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15 // Creates a dropdown of 15 years to control year
+        });
+    </script>
+{% endblock content %}

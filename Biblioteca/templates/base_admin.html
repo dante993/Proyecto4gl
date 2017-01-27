@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="es">
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title>Control de Usuarios y Servicios</title>
+    <link type="image/x-icon" href="../static/img/libsoft.png" rel="shortcut icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    {% block css %}
+        <link rel="stylesheet" href="{% static 'css/materialize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/estiloss.css' %}">
+    {% endblock css %}
+    {% block js %}
+        <script src="{% static 'js/jquery.js' %}" ></script>
+        <script src="{% static 'js/materialize.js' %}" ></script>
+    {% endblock js %}
+</head>
+<body  style="background: url({% static 'img/biblioteca.jpg' %}) no-repeat fixed center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+{% if user.is_superuser == True%}
+    <div class="navbar-fixed cont-f">
+
+        <nav>
+            <div class="nav-wrapper red">
+                <img width="200" src="{% static 'img/logo_utm2.png' %}" style="margin-top: 5px;margin-right: 1%;margin-left: 5px"/>
+                <a href="#!" class="brand-logo"> {{user.per_nombre}} {{user.per_apellido}}</a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{% url 'personas_list' %}">Usuarios</a></li>
+                    <li><a href="{% url 'tipos_list' %}">Tipos</a></li>
+                    <li><a href="{% url 'ua_list' %}">Unidades académicas</a></li>
+                    <li><a href="{% url 'carreras_list' %}">Carreras</a></li>
+                    <li><a href="{% url 'comp_list' %}">Computadoras</a></li>
+                    <li><a href="{% url 'serv_list' %}">Servicios</a></li>
+                    <li><a href="{% url 'hits_serv' %}">Solicitudes</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="material-icons right">input</i> Salir</a></li>
+                </ul>
+                <ul class="side-nav" id="mobile-demo">
+                    <li><a href="{% url 'personas_list' %}">Usuarios</a></li>
+                    <li><a href="{% url 'tipos_list' %}">Tipos</a></li>
+                    <li><a href="{% url 'ua_list' %}">Unidades académicas</a></li>
+                    <li><a href="{% url 'carreras_list' %}">Carreras</a></li>
+                    <li><a href="{% url 'comp_list' %}">Computadoras</a></li>
+                    <li><a href="{% url 'serv_list' %}">Servicios</a></li>
+                    <li><a href="{% url 'hits_serv' %}">Solicitudes</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="material-icons right">input</i> Salir</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div id="contenido" class="cont-f">
+
+        {% block content %}
+
+        {% endblock content %}
+        <br/>
+    </div>
+{% endif %}
+{% if user.is_superuser == False%}
+    <div class="color-c" style="margin-left: 30%;margin-right: 30%;margin-top: 5%;padding-top: 5%;padding-bottom: 5%;padding-left: 5%;padding-right: 5%">
+
+        <blockquote>
+            <h1 style="text-align: center">OOoops!</h1>
+            <p style="text-align: justify;font-size: 25px">Lo sentimos, esta seccion esta disponible solo para Administradores.</p>
+            <p style="text-align: center"><i class="medium material-icons red-text">visibility_off</i></p>
+        </blockquote>
+        <a style="margin-left: 36%" class="btn-large" href="{% url 'inicio' %}">Regresar</a>
+    </div>
+{% endif %}
+
+<script>
+    $(".button-collapse").sideNav();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="color-c" style="margin-left: 30%;margin-right: 30%;margin-top: 5%;padding-top: 5%;padding-bottom: 5%;padding-left: 5%;padding-right: 5%">
+
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <h5>Seleccione la carrera de la que desea eliminar estudiantes</h5>
+                </div>
+                <div class="col s9" style="margin-top: 30px">
+                    <label class="tam_l">Carreras</label>
+                    <select class="browser-default" id="carr" name="carr">
+                        {% for car in carreras %}
+                            <option value="{{ car.carr_id }}">{{ car.carr_nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light" type="submit">Eliminar</button>
+                    <a class="btn waves-effect waves-light" href="{% url 'personas_list' %}">Cancelar</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+{% endblock content %}

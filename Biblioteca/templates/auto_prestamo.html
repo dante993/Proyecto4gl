@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <br/>
+    <div align="center">
+        <a class="btn waves-effect waves-light light-green accent-3"></a><strong> = Disponible </strong>
+        <a class="btn waves-effect waves-light deep-orange accent-3"></a><strong> = Ocupado</strong>
+    </div>
+    <br/>
+    <div class="divider"></div><br/><br/>
+    {% for computador in computadores %}
+        {% if computador.comp_uso == True%}
+            <a href="#" onclick="solicitar(this.id,this.name)" id="{{ computador.comp_numero }}" name="{{ computador.comp_id }}">
+                <input style="display: none">
+                <div class="pcs">
+                    <div class="row tam_pc">
+                        <div class="col s12 m6">
+                            <div class="card blue">
+                                <div class="card-content">
+                                    <img width="80" src="{% static 'img/pc.png' %}">
+                                    <br/>
+                                    <strong class="white-text">{{ computador.comp_numero }}</strong>
+                                </div>
+                                <div class="card-action">
+                                    <a style="background-color: #ff3d00" class="btn waves-effect waves-light" id="{{ computador.comp_id }}" name="disponible"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+        {% if computador.comp_uso == False%}
+            <a href="#" onclick="solicitar(this.id,this.name)" id="{{ computador.comp_numero }}" name="{{ computador.comp_id }}">
+                <input style="display: none">
+                <div class="pcs">
+                    <div class="row tam_pc">
+                        <div class="col s12 m6">
+                            <div class="card blue">
+                                <div class="card-content">
+                                    <img width="80" src="{% static 'img/pc.png' %}">
+                                    <br/>
+                                    <strong class="white-text">{{ computador.comp_numero }}</strong>
+                                </div>
+                                <div class="card-action">
+                                    <a style="background-color: #76ff03" class="btn waves-effect waves-light" id="{{ computador.comp_id }}" name="disponible"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+
+    {% endfor %}
+    <script>
+        var contador=0;
+        function solicitar(c_id,c_mac){
+            var disp=document.getElementById(c_mac)
+            {#            alert(c_mac);#}
+            if(disp.name=="ocupado"){
+                disp.name="disponible";
+                disp.style.backgroundColor='#76ff03';
+            }else{
+                disp.name="ocupado";
+                disp.style.backgroundColor='#ff3d00  ';
+            }
+        }
+    </script>
+{% endblock content %}

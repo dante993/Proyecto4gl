@@ -1,0 +1,108 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+
+        <h2 align="center">Usuarios</h2>
+        <br/>
+
+        <form class="col s12" method="POST">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s2" style="margin-left: 10px">
+                    <input id="busca" name="busca" type="text" class="validate">
+                    <label for="busca">Buscar</label>
+                </div>
+                <div class="input-field col s2">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        <i class="material-icons right">search</i>
+                    </button>
+                </div>
+                <div class="input-field col s2">
+                    <a class="btn waves-effect waves-light" href="{% url 'importar' %}">Importar</a>
+                </div>
+                <div class="input-field col s1">
+                    <button onclick=" window.open('{% url 'pdf' %}') " class="btn-floating waves-effect waves-light">
+                        <i class="material-icons right">print</i>
+                    </button>
+                </div>
+                <div class="input-field col s4">
+                    <a class="btn waves-effect waves-light" href="{% url 'eliminar_c' %}">Eliminar por carreras</a>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+
+        <div class="row" style="margin-left: 0%">
+            {% if users.has_previous %}
+                <a class="btn col s1 azul white-text flow-text waves-effect" href="?page={{ users.previous_page_number }}" style="border-right: 1px solid #000000">
+                    <<
+                </a>
+            {% endif %}
+            <a class="col s3 azul white-text flow-text" style="border-right: 1px solid #000000">
+                Página {{ users.number }} de {{ users.paginator.num_pages }}
+            </a>
+            {% if users.has_next %}
+                <a class="btn col s1 azul white-text flow-text waves-effect right-align" href="?page={{ users.next_page_number }}"> >> </a>
+            {% endif %}
+        </div>
+
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+                <th width="10%">Cédula</th>
+                <th width="10%">Nombre</th>
+                <th width="10%">Apellido</th>
+                <th width="10%">Carrera</th>
+                <th width="10%">Tipo</th>
+                <th width="10%">Estado</th>
+                <th width="10%">Privilegios</th>
+                <th width="10%">(Editar)</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for us in users %}
+                <tr>
+                    <td width="10%">{{ us.per_cedula }}</td>
+                    <td width="10%">{{ us.per_nombre }}</td>
+                    <td width="10%">{{ us.per_apellido }}</td>
+                    <td width="10%">{{ us.carr_id }}</td>
+                    <td width="10%">{{ us.tip_id }}</td>
+                    {% if us.is_active == True%}
+                        <td>activo</td>
+                    {% endif %}
+                    {% if us.is_active == False%}
+                        <td>inactivo</td>
+                    {% endif %}
+
+                    {% if us.is_superuser == True%}
+                        <td>Administrador</td>
+                    {% endif %}
+                    {% if us.is_superuser == False%}
+                        <td>Usuario</td>
+                    {% endif %}
+                    <td><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'editar_usuario_adm' us.per_cedula %}"><i class="material-icons">mode_edit</i></a>
+                        <a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'borrar_per' us.per_cedula %}"><i class="material-icons">delete</i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br/>
+        <div class="row" style="margin-left: 0%">
+            {% if users.has_previous %}
+                <a class="btn col s1 azul white-text flow-text waves-effect" href="?page={{ users.previous_page_number }}" style="border-right: 1px solid #000000">
+                    <<
+                </a>
+            {% endif %}
+            <a class="col s3 azul white-text flow-text" style="border-right: 1px solid #000000">
+                Página {{ users.number }} de {{ users.paginator.num_pages }}
+            </a>
+            {% if users.has_next %}
+                <a class="btn col s1 azul white-text flow-text waves-effect right-align" href="?page={{ users.next_page_number }}"> >> </a>
+            {% endif %}
+        </div>
+        <br/>
+
+    </div>
+
+
+{% endblock content %}

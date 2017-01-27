@@ -1,0 +1,30 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+    <input type="datetime-local" >
+        <h2 align="center">Historial de {{ computador.comp_numero }}</h2>
+        <div align="center"><a class="btn waves-effect waves-light" href="{% url 'comp_list' %}">Regresar</a></div>
+        <br/>
+        <div style="border-bottom: 2px dashed #3498D0"></div>
+        <br/>
+
+        {% for observacion in observaciones %}
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">comment</i>
+                        <strong style="font-size: 25px">{{ observacion.ob_fecha }}</strong>
+                    </div>
+                    <div class="collapsible-body"><textarea style="height: 100px" disabled>{{ observacion.ob_observacion }}</textarea></div>
+                </li>
+            </ul>
+        {% endfor %}
+
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.collapsible').collapsible({
+                accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            });
+        });
+    </script>
+{% endblock content %}

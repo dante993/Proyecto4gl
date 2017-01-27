@@ -1,0 +1,46 @@
+{% extends "base_admin.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <div class="formularios-peq color-c">
+            <div class="row">
+                <form action="" method="post" class="col s12">{% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s7">
+                            {{ form.serv_nombre }}
+                            {{ form.serv_nombre.label_tag }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.serv_tipo }}
+                            {{ form.serv_tipo.label_tag }}
+                        </div>
+                        <div class="input-field col s7">
+                            {{ form.serv_descripcion }}
+                            {{ form.serv_descripcion.label_tag }}
+                        </div>
+                        <div class="input-field col s7">
+                            <div class="switch">
+                                <label>
+                                    Off
+                                    {{ form.serv_estado }}
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <a class="btn waves-effect waves-light" name="action" href="{% url 'serv_list' %}">Cancelar
+                        <i class="material-icons">send</i>
+                    </a>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
+                        <i class="material-icons">send</i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

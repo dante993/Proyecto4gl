@@ -1,0 +1,47 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="container color-c">
+
+        <h2 align="center">Categorías de usuarios</h2>
+        <br/>
+
+        <form class="col s12" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s4">
+                    <a class="waves-effect waves-light btn" href="{% url 'tip_create' %}"><i class="material-icons left">add</i>Nuevo</a>
+                </div>
+                <div class="input-field col s2">
+                    <input id="busca" name="busca" type="text" class="validate">
+                    <label for="busca">Buscar</label>
+                </div>
+                <div class="input-field col s1">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        <i class="material-icons right">search</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div style="border-bottom: 1px solid"></div>
+
+
+        <table class="striped" align="center">
+            <thead>
+            <tr>
+                <th width="10%">Id</th>
+                <th width="10%">Nombre</th>
+                <th width="10%">(Editar)</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for tipo in tipos %}
+                <tr>
+                    <td width="10%">{{ tipo.tip_id }}</td>
+                    <td width="10%">{{ tipo.tip_nombre }}</td>
+                    <td width="10%"><a class="btn-floating btn-large waves-effect waves-light blue" href="{% url 'editar_tipo' tipo.tip_id %}"><i class="material-icons">mode_edit</i></a>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

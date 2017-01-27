@@ -79,13 +79,13 @@ WSGI_APPLICATION = 'Biblioteca.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'biblioteca',
-        'USER':'postgres',
-        'PASSWORD':'12345',
-        'HOST':'localhost',
-        'PORT':'5432'
+    'default' : {
+        'ENGINE' : 'django.db.backends.oracle',
+        'NAME' : 'orclA',
+        'USER' : 'HR',
+        'PASSWORD' : 'oracle',
+        'HOST' : '192.168.10.1',
+        'PORT' : '1521'
     }
 }
 

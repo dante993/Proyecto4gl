@@ -82,7 +82,7 @@ DATABASES = {
     'default' : {
         'ENGINE' : 'django.db.backends.oracle',
         'NAME' : 'orclA',
-        'USER' : 'HR',
+        'USER' : 'PROYECTO4GL',
         'PASSWORD' : 'oracle',
         'HOST' : '192.168.10.1',
         'PORT' : '1521'

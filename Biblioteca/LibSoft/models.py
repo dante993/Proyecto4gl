@@ -41,6 +41,37 @@ class Servicio(models.Model):
     serv_estado = models.BooleanField()
     def __unicode__(self):
         return self.serv_nombre
+    def serv_create(self,serv_nombre,serv_descripcion,serv_estado):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_SERVICIO", (serv_nombre,serv_descripcion,serv_estado,msgrt))
+        cursor.close()
+        return ret
+    def serv_list(self):
+        vista_servicio = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_SERVICIO', ("", cursor))
+        for row in query[1].fetchall():
+            vista_servicio.append({'serv_id': row[0],
+                                'serv_nombre': row[1],
+                                'serv_descripcion': row[2],
+                                'serv_estado': row[3]})
+        print(vista_servicio)
+        cur.close()
+        return vista_servicio
+    def serv_update(self,serv_id,serv_nombre,serv_descripcion,serv_estado):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("ACTUALIZAR_SERVICIO", (serv_id,serv_nombre,serv_descripcion,serv_estado,msgrt))
+        cursor.close()
+        return ret
+    def serv_delete(self,serv_id):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("ELIMINAR_SERVICIO", (serv_id,msgrt))
+        cursor.close()
+        return ret
 
 class Sensor(models.Model):
     sens_id=models.AutoField(primary_key=True)
@@ -59,12 +90,69 @@ class Computador(models.Model):
     comp_procesador=models.CharField(max_length = 50)
     comp_uso=models.BooleanField(default=False)
     comp_estado = models.BooleanField()
+    def comp_create(self,comp_id, comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_COMPUTADOR", (comp_id,comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado,msgrt))
+        cursor.close()
+        return ret
+    def comp_list(self):
+        vista_computador = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_COMPUTADOR', ("", cursor))
+        for row in query[1].fetchall():
+            vista_computador.append({'comp_id': row[0],
+                                'comp_numero': row[1],
+                                'comp_marca': row[2],
+                                'comp_serie': row[3],
+                                'comp_so': row[4],
+                                'comp_anio': row[5],
+                                'comp_ram': row[6],
+                                'comp_disco_d': row[7],
+                                'comp_procesador': row[8],
+                                'comp_uso': row[9],
+                                'comp_estado': row[10]})
+        print(vista_computador)
+        cur.close()
+        return vista_computador
+    def comp_update(self,comp_id, comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("ACTUALIZAR_COMPUTADOR", (comp_id,comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado,msgrt))
+        cursor.close()
+        return ret
+    def comp_delete(self,comp_id):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("ELIMINAR_COMPUTADOR", (comp_id,msgrt))
+        cursor.close()
+        return ret
 
 class Observaciones(models.Model):
     ob_id=models.AutoField(primary_key=True)
     ob_observacion=models.TextField()
-    ob_fecha=models.DateTimeField(auto_now_add=True)
+    ob_fecha=models.CharField(max_length=50)
     comp_id=models.ForeignKey(Computador)
+    def ob_create(self, ob_observacion,ob_fecha,comp_id):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_OBSERVACIONES", (ob_observacion,ob_fecha,comp_id,msgrt))
+        cursor.close()
+        return ret
+    def ob_list(self):
+        vista_observacion = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_OBSERVACIONES', ("", cursor))
+        for row in query[1].fetchall():
+            vista_observacion.append({'ob_observacion': row[1],
+                                'ob_fecha': row[2],
+                                'comp_id': row[3]})
+        print(vista_observacion)
+        cur.close()
+        return vista_observacion
+
 
 class Unidad_academica(models.Model):
     ua_id=models.AutoField(primary_key=True)
@@ -93,6 +181,30 @@ class Tipo_persona(models.Model):
     tip_nombre=models.CharField(max_length=50)
     def __unicode__(self):
         return self.tip_nombre
+    def tip_create(self, tip_nombre):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_TIPO_PERSONA", (tip_nombre,msgrt))
+        cursor.close()
+        return ret
+    def tip_list(self):
+        vista_observacion = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_TIPO_PERSONA', ("", cursor))
+        for row in query[1].fetchall():
+            vista_observacion.append({'tip_id': row[0],
+                                'tip_nombre': row[1]})
+        print(vista_observacion)
+        cur.close()
+        return vista_observacion
+    def tip_update(self,tip_id, tip_nombre):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("ACTUALIZAR_TIPO_PERSONA", (tip_id,tip_nombre,msgrt))
+        cursor.close()
+        return ret
+
 
 
 def validar_cedula(value):
@@ -151,3 +263,22 @@ class SolicitudServicio(models.Model):
     comp_id=models.ForeignKey(Computador,blank=True,null=True)
     ss_fecha=models.DateTimeField(auto_now_add=True)
     ss_estado = models.BooleanField(default=True)
+    def sserv_create(self,per_cedula,carr_id,serv_id,comp_id,ss_fecha,ss_estado):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_SOLICITUDSERVICIO", (per_cedula,carr_id,serv_id,comp_id,ss_fecha,ss_estado,msgrt))
+        cursor.close()
+        return ret
+    def sserv_list(self):
+        vista_servicio = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_SOLICITUDSERVICIO', ("", cursor))
+        for row in query[1].fetchall():
+            vista_servicio.append({'serv_id': row[0],
+                                'serv_nombre': row[1],
+                                'serv_descripcion': row[2],
+                                'serv_estado': row[3]})
+        print(vista_servicio)
+        cur.close()
+        return vista_servicio

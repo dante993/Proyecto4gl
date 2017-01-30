@@ -17,6 +17,7 @@ from .forms import *
 import string
 from random import choice
 from datetime import datetime
+import time
 import csv
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
@@ -58,7 +59,7 @@ def v_inicio_admin(request):
 def v_inicio(request):
     usuario=get_object_or_404(User,per_cedula=request.user)
     mi_template = loader.get_template("inicio.html")
-    servicios = Servicio.objects.all()
+    servicios = Servicio().serv_list()
     mi_contexto = {'servicios':servicios,'user':usuario}
     return HttpResponse(mi_template.render(mi_contexto))
 
@@ -66,9 +67,9 @@ def v_inicio(request):
 def Prestamo(request):
     usuario=get_object_or_404(User,per_cedula=request.user)
     mi_template = loader.get_template("auto_prestamo.html")
-    computadores = Computador.objects.all()
-    servicios = Servicio.objects.all()
-    mi_contexto = {'computadores':computadores,'servicios':servicios,'user':usuario}
+    comp = Computador().comp_list()
+    serv = Servicio().serv_list()
+    mi_contexto = {'computadores':comp,'servicios':serv,'user':usuario}
     return HttpResponse(mi_template.render(mi_contexto))
 
 @login_required(login_url='login')
@@ -77,6 +78,10 @@ def SolicitarServicio(request,pk,template_name='agregar/solicitar_servicio.html'
     obj = get_object_or_404(Servicio, pk=pk)
     servicios = Servicio.objects.all()
     if request.method=='POST':
+        # ahora = datetime.now()
+        # ob_fecha=time.strftime("%d/%m/%y")+" "+str(ahora.hour)+":"+str(ahora.minute)+":"+str(ahora.second)+",200000000"
+        # servicio = SolicitudServicio()
+        # ret = servicio.sserv_create(usuario.per_cedula,usuario.carr_id,pk,None,ob_fecha,1)
         solicitud = SolicitudServicio(per_cedula=usuario, carr_id=usuario.carr_id,serv_id=obj,comp_id=None,ss_estado=True)
         solicitud.save()
         return redirect("logout")
@@ -161,11 +166,20 @@ def editar_contrasena(request):
 def ServicioCreate(request, template_name='agregar/agregar_servicio.html'):
     usuario=get_object_or_404(User,per_cedula=request.user)
     form = ServiciosForm(request.POST or None)
-    servicios = Servicio.objects.all()
     if form.is_valid():
-        form.save()
+        servicio = Servicio()
+        serv_nombre = form.cleaned_data['serv_nombre']
+        serv_descripcion = form.cleaned_data['serv_descripcion']
+        serv_estado = form.cleaned_data['serv_estado']
+        if serv_estado==True:
+            serv_estado=1
+        else:
+            serv_estado=0
+
+        ret = servicio.serv_create(serv_nombre,serv_descripcion,serv_estado)
+
         return redirect("serv_list")
-    return render(request,template_name,{'form':form,'servicios':servicios,'user':usuario})
+    return render(request,template_name,{'form':form,'user':usuario})
 
 @login_required(login_url='login')
 def Servicios(request):
@@ -173,7 +187,7 @@ def Servicios(request):
     if request.method=='POST':
         serv = Servicio.objects.order_by("serv_id").filter(serv_nombre__contains=request.POST["busca"])
         return render_to_response('listar/servicios.html',{'servicios':serv,'user':usuario},context_instance=RequestContext(request))
-    serv = Servicio.objects.order_by("serv_id")
+    serv = Servicio().serv_list()
     return render_to_response('listar/servicios.html',{'servicios':serv,'user':usuario},context_instance=RequestContext(request))
 
 @login_required(login_url='login')
@@ -182,26 +196,55 @@ def ServicioUpdate(request,pk,template_name='editar/editar_servicio.html'):
     obj = get_object_or_404(Servicio, pk=pk)
     form = ServiciosForm(request.POST or None, instance=obj)
     if form.is_valid():
-        form.save()
+        # serv_id,serv_nombre,serv_descripcion,serv_estado
+        servicio = Servicio()
+        serv_nombre = form.cleaned_data['serv_nombre']
+        serv_descripcion = form.cleaned_data['serv_descripcion']
+        serv_estado = form.cleaned_data['serv_estado']
+        if serv_estado==True:
+            serv_estado=1
+        else:
+            serv_estado=0
+
+        ret = servicio.serv_update(pk,serv_nombre,serv_descripcion,serv_estado)
+
         return redirect("serv_list")
     return render(request,template_name,{'form':form,'user':usuario})
 
 @login_required(login_url='/')
 def ServicioDelete(request,pk):
-    obj = get_object_or_404(Servicio, pk=pk)
-    obj.serv_estado=False
-    obj.save()
+    servicio = Servicio()
+    ret = servicio.serv_delete(pk)
     return redirect("serv_list")
 
 # -------------------------------------------------------computadoras--------------------------------------------------------------
+
 @login_required(login_url='login')
 def ComputadorCreate(request, template_name='agregar/agregar_computador.html'):
     usuario=get_object_or_404(User,per_cedula=request.user)
     form = ComputadorForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        computador = Computador()
+        comp_id = form.cleaned_data['comp_id']
+        comp_numero = form.cleaned_data['comp_numero']
+        comp_marca = form.cleaned_data['comp_marca']
+        comp_serie = form.cleaned_data['comp_serie']
+        comp_so = form.cleaned_data['comp_so']
+        comp_anio = form.cleaned_data['comp_anio']
+        comp_ram = form.cleaned_data['comp_ram']
+        comp_disco_d = form.cleaned_data['comp_disco_d']
+        comp_procesador = form.cleaned_data['comp_procesador']
+        comp_estado = form.cleaned_data['comp_estado']
+        if comp_estado==True:
+            comp_estado=1
+        else:
+            comp_estado=0
+        comp_uso=0
+
+        ret = computador.comp_create(comp_id,comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado)
         return redirect("comp_list")
     return render(request,template_name,{'form':form,'user':usuario})
+
 
 @login_required(login_url='login')
 def Computadoras(request):
@@ -209,7 +252,7 @@ def Computadoras(request):
     if request.method=='POST':
         comp = Computador.objects.order_by("comp_numero").filter(comp_numero__contains=request.POST["busca"])
         return render_to_response('listar/computadoras.html',{'computadoras':comp,'user':usuario},context_instance=RequestContext(request))
-    comp = Computador.objects.order_by("comp_numero")
+    comp = Computador().comp_list()
     return render_to_response('listar/computadoras.html',{'computadoras':comp,'user':usuario},context_instance=RequestContext(request))
 
 @login_required(login_url='login')
@@ -218,23 +261,42 @@ def ComputadorUpdate(request,pk,template_name='editar/editar_computador.html'):
     obj = get_object_or_404(Computador, pk=pk)
     form = ComputadorForm(request.POST or None, instance=obj)
     if form.is_valid():
-        form.save()
+        computador = Computador()
+        comp_numero = form.cleaned_data['comp_numero']
+        comp_marca = form.cleaned_data['comp_marca']
+        comp_serie = form.cleaned_data['comp_serie']
+        comp_so = form.cleaned_data['comp_so']
+        comp_anio = form.cleaned_data['comp_anio']
+        comp_ram = form.cleaned_data['comp_ram']
+        comp_disco_d = form.cleaned_data['comp_disco_d']
+        comp_procesador = form.cleaned_data['comp_procesador']
+        comp_estado = form.cleaned_data['comp_estado']
+        if comp_estado==True:
+            comp_estado=1
+        else:
+            comp_estado=0
+        comp_uso=0
+
+        ret = computador.comp_update(pk,comp_numero,comp_marca,comp_serie,comp_so,comp_anio,comp_ram,comp_disco_d,comp_procesador,comp_uso,comp_estado)
+
         return redirect("comp_list")
     return render(request,template_name,{'form':form,'user':usuario})
 
 @login_required(login_url='/')
 def ComputadorDelete(request,pk):
-    obj = get_object_or_404(Computador, pk=pk)
-    obj.comp_estado=False
-    obj.save()
+    computador = Computador()
+    ret = computador.comp_delete(pk)
     return redirect("comp_list")
 
 @login_required(login_url='login')
 def Agregar_observacion(request,pk,template_name='agregar/agregar_observacion.html'):
     comp = get_object_or_404(Computador, pk=pk)
     if request.method=='POST':
-        ob = Observaciones(ob_observacion=request.POST.get("observacion"),comp_id=comp)
-        ob.save()
+        ob_observacion=request.POST.get("observacion")
+        ahora = datetime.now()
+        ob_fecha=str(time.strftime("%d-%m-%y")+" "+str(ahora.hour)+":"+str(ahora.minute)+":"+str(ahora.second))
+        observacion = Observaciones()
+        ret = observacion.ob_create(ob_observacion,ob_fecha,pk)
         return redirect("comp_list")
     return render(request,template_name,{'computador':comp})
 
@@ -308,7 +370,10 @@ def TipoCreate(request, template_name='agregar/agregar_tipo.html'):
     usuario=get_object_or_404(User,per_cedula=request.user)
     form = TipoForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        tipo = Tipo_persona()
+        tip_nombre = form.cleaned_data['tip_nombre']
+
+        ret = tipo.tip_create(tip_nombre)
         return redirect("tipos_list")
     return render(request,template_name,{'form':form,'user':usuario})
 
@@ -318,7 +383,7 @@ def Tipos(request):
     if request.method=='POST':
         tips = Tipo_persona.objects.order_by("tip_id").filter(tip_nombre__contains=request.POST["busca"])
         return render_to_response('listar/tipos.html',{'tipos':tips,'user':usuario},context_instance=RequestContext(request))
-    tips = Tipo_persona.objects.order_by("tip_id")
+    tips = Tipo_persona().tip_list()
     return render_to_response('listar/tipos.html',{'tipos':tips,'user':usuario},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -327,7 +392,10 @@ def TipoUpdate(request,pk,template_name='editar/editar_tipo.html'):
     obj = get_object_or_404(Tipo_persona, pk=pk)
     form = TipoForm(request.POST or None, instance=obj)
     if form.is_valid():
-        form.save()
+        tipo = Tipo_persona()
+        tip_nombre = form.cleaned_data['tip_nombre']
+
+        ret = tipo.tip_update(pk,tip_nombre)
         return redirect("tipos_list")
     return render(request,template_name,{'form':form,'user':usuario})
 

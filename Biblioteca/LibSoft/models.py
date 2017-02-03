@@ -161,6 +161,31 @@ class Unidad_academica(models.Model):
     dep_codigo = models.IntegerField()
     def __unicode__(self):
         return self.ua_nombre
+    def ua_create(self, ua_nombre,ua_descripcion,dep_codigo):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_UA", (ua_nombre,ua_descripcion,dep_codigo,msgrt))
+        cursor.close()
+        return ret
+    def ua_list(self):
+        vista_unidad = []
+        cur = connection.cursor()
+        cursor = cur.var(cx_Oracle.CURSOR).var
+        query = cur.callproc('LISTAR_UNIDAD_ACADEMICA', ("", cursor))
+        for row in query[1].fetchall():
+            vista_unidad.append({'ua_id': row[0],
+                                'ua_nombre': row[1],
+                                'ua_descripcion': row[2],
+                                'dep_codigo': row[3]})
+        print(vista_unidad)
+        cur.close()
+        return vista_unidad
+    def ua_update(self, ua_id, ua_nombre,ua_descripcion,dep_codigo):
+        msgrt=''
+        cursor = connection.cursor()
+        ret = cursor.callproc("CREAR_UA", (ua_id,ua_nombre,ua_descripcion,dep_codigo,msgrt))
+        cursor.close()
+        return ret
 
 
 class Carrera(models.Model):
@@ -173,8 +198,8 @@ class Carrera(models.Model):
         return self.carr_nombre
 
 class Importe(models.Model):
-    imp_archvio=models.FileField(upload_to="importes")
-    imp_carrera=models.ForeignKey(Carrera)
+    imp_archvio=models.FileField(upload_to="importes",verbose_name="Archivo .cvs")
+    imp_carrera=models.ForeignKey(Carrera,verbose_name="Carrera desde la q se importa")
 
 class Tipo_persona(models.Model):
     tip_id=models.AutoField(primary_key=True)

@@ -312,7 +312,12 @@ def UACreate(request, template_name='agregar/agregar_unidad.html'):
     usuario=get_object_or_404(User,per_cedula=request.user)
     form = U_A_Form(request.POST or None)
     if form.is_valid():
-        form.save()
+        unidad = Unidad_academica()
+        ua_nombre = form.cleaned_data['ua_nombre']
+        ua_descripcion = form.cleaned_data['ua_descripcion']
+        dep_codigo = form.cleaned_data['dep_codigo']
+
+        ret = unidad.ua_create(ua_nombre,ua_descripcion,dep_codigo)
         return redirect("ua_list")
     return render(request,template_name,{'form':form,'user':usuario})
 
@@ -322,7 +327,7 @@ def UA(request):
     if request.method=='POST':
         ua = Unidad_academica.objects.order_by("ua_id").filter(ua_nombre__contains=request.POST["busca"])
         return render_to_response('listar/unidades.html',{'unidades':ua,'user':usuario},context_instance=RequestContext(request))
-    ua = Unidad_academica.objects.order_by("ua_id")
+    ua = Unidad_academica().ua_list()
     return render_to_response('listar/unidades.html',{'unidades':ua,'user':usuario},context_instance=RequestContext(request))
 
 @login_required(login_url='login')
